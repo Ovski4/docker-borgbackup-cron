@@ -15,6 +15,11 @@ docker build -t ovski/borgbackup-cron:latest .
 Usage
 -----
 
+1. Make sure borg is installed on your remote server
+2. Make sure the public key associated with the given private key is present in the ~/.ssh/authorized_keys file of your remote server
+3. Replace the value of the environment variables of the following command according to your needs.
+
+```bash
 docker run \
    -d \
    -v /path/to/folder_to_backup:/var/folder_to_backup \
@@ -26,15 +31,12 @@ docker run \
    -e BORG_REPO_NAME=folder_to_backup \
    -e BORG_PASSPHRASE=youyouthatsnotgood \
    -e LOCAL_FOLDER=/var/folder_to_backup \
-   -e GITLAB_USER=gitlab+deploy-token-99999 \
-   -e GITLAB_PASSWORD=keyhereverysecret \
    ovski/borgbackup-cron
+```
 
 You can also use secrets in a stack to store sensitive information.
 Instead of specifiying environment variables, create the following secrets in /var/secrets (default location):
 
 ```
 /run/secrets/borg_passphrase
-/run/secrets/gitlab_user
-/run/secrets/gitlab_password
 ```

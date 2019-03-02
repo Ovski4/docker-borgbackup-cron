@@ -14,17 +14,8 @@ if [[ -n "$SSH_KNOWN_HOSTS" ]]; then
 fi
 
 # Clone ansible playbooks
-if [[ ! -z "$GITLAB_USER" && ! -z "$GITLAB_PASSWORD" ]]; then
-    echo "Cloning ansible gitlab repository"
-    git clone https://${GITLAB_USER}:${GITLAB_PASSWORD}@gitlab.com/ovski-projects/infra/ansible.git /var/ansible
-elif [[ -f /run/secrets/gitlab_user && -f /run/secrets/gitlab_password ]]; then
-    GITLAB_USER=$(cat /run/secrets/gitlab_user)
-    GITLAB_PASSWORD=$(cat /run/secrets/gitlab_password)
-    git clone https://${GITLAB_USER}:${GITLAB_PASSWORD}@gitlab.com/ovski-projects/infra/ansible.git /var/ansible
-else
-    echo "Gitlab credentials not set. Exiting"
-    exit 1
-fi
+echo "Cloning ansible gitlab repository"
+git clone https://gitlab.com/ovski-projects/infra/ansible-playbooks/borg-backup.git /var/borg-backup-playbook
 
 # Set borg passphrase env variable
 if [[ -f /run/secrets/borg_passphrase ]]; then
