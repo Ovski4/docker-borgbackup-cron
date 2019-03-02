@@ -1,0 +1,32 @@
+image: docker:latest
+
+services:
+  - docker:dind
+
+stages:
+  - build
+  - push
+
+before_script:
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+
+build-borgbackup-cron:
+  stage: build
+  script:
+    - docker build --pull -t $CI_REGISTRY_IMAGE/borgbackup-cron .
+
+push-borgbackup-cron-latest:
+  stage: push
+  script:
+    - docker build --pull -t $CI_REGISTRY_IMAGE/borgbackup-cron:latest .
+    - docker push $CI_REGISTRY_IMAGE/borgbackup-cron:latest
+  only:
+    - master
+
+push-borgbackup-cron-tagged:
+  stage: push
+  script:
+    - docker build --pull -t $CI_REGISTRY_IMAGE/borgbackup-cron:$CI_COMMIT_TAG .
+    - docker push $CI_REGISTRY_IMAGE/borgbackup-cron:$CI_COMMIT_TAG
+  only:
+    - tags
