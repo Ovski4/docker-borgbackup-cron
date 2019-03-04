@@ -18,9 +18,6 @@ RUN pip install PyMySql
 # Install cron
 RUN apt-get install -y cron
 
-COPY entrypoint.sh /var/entrypoint.sh
-RUN chmod +x /var/entrypoint.sh
-
 COPY backup_script.sh /var/backup_script.sh
 RUN chmod +x /var/backup_script.sh
 
@@ -28,4 +25,8 @@ COPY borgbackup_cron /etc/cron.d/borgbackup_cron
 RUN chmod +x /etc/cron.d/borgbackup_cron
 RUN crontab /etc/cron.d/borgbackup_cron
 
-CMD [ "/var/entrypoint.sh" ]
+COPY entrypoint.sh /var/entrypoint.sh
+RUN chmod +x /var/entrypoint.sh
+ENTRYPOINT [ "/var/entrypoint.sh" ]
+
+CMD ["cron" "-f"]

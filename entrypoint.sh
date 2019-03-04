@@ -1,4 +1,5 @@
 #!/bin/bash
+bash set -eo pipefail
 
 # Add known hosts
 if [[ -n "$SSH_KNOWN_HOSTS" ]]; then
@@ -35,5 +36,4 @@ fi
 # Make env variables accessible in crontab
 declare -p | grep -Ev 'BASHOPTS|BASH_VERSINFO|EUID|PPID|SHELLOPTS|UID' > /container.env
 
-echo "Run the crontab in the foreground"
-cron -f
+exec "$@"
