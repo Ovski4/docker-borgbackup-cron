@@ -14,8 +14,9 @@ if [[ -n "$SSH_KNOWN_HOSTS" ]]; then
 fi
 
 # Clone ansible playbooks
-echo "Cloning ansible gitlab repository"
+echo "Cloning ansible gitlab repositories"
 git clone https://gitlab.com/ovski-projects/infra/ansible-playbooks/borg-backup.git /var/borg-backup-playbook
+git clone https://gitlab.com/ovski-projects/infra/ansible-playbooks/mysql-dump.git /var/mysql-dump-playbook
 
 # Set borg passphrase env variable
 if [[ -f /run/secrets/borg_passphrase ]]; then
@@ -24,6 +25,11 @@ if [[ -f /run/secrets/borg_passphrase ]]; then
 elif [[ -z "$BORG_PASSPHRASE" ]]; then
     echo "BORG_PASSPHRASE env variable not set. Exiting"
     exit 1
+fi
+
+if [[ -f /run/secrets/db_password ]]; then
+    echo "Setting MYSQL_PASSWORD env variable from secret"
+    export MYSQL_PASSWORD=$(cat /run/secrets/db_password)
 fi
 
 # Make env variables accessible in crontab

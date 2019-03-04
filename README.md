@@ -1,7 +1,8 @@
 Borg backup cron
 =================
 
-A docker image to backup periodically a folder using borg
+A docker image to backup periodically a folder using borg.
+Additionnally this image can dump a mysql database in the same folder beforehand.
 
 Build
 -----
@@ -34,9 +35,21 @@ docker run \
    ovski/borgbackup-cron
 ```
 
+With mysql dump
+
+```bash
+docker run \
+   # ... other options
+   -e MYSQL_USER=/var/folder_to_backup \
+   -e MYSQL_DATABASE=/var/folder_to_backup \
+   -e MYSQL_PASSWORD=/var/folder_to_backup \
+   ovski/borgbackup-cron
+```
+
 You can also use secrets in a stack to store sensitive information.
 Instead of specifiying environment variables, create the following secrets in /var/secrets (default location):
 
 ```
-/run/secrets/borg_passphrase
+/run/secrets/borg_passphrase instead of BORG_PASSPHRASE
+/run/secrets/db_password instead of MYSQL_PASSWORD
 ```

@@ -11,6 +11,10 @@ RUN apt-get install -y \
     build-essential \
     borgbackup
 
+# Install packages for mysqldump
+RUN apt-get install -y mysql-client
+RUN pip install PyMySql
+
 # Install cron
 RUN apt-get install -y cron
 
