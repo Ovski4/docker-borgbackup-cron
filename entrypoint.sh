@@ -1,5 +1,6 @@
 #!/bin/bash
-bash set -eo pipefail
+set -eo pipefail
+shopt -s nullglob
 
 # Add known hosts
 if [[ -n "$SSH_KNOWN_HOSTS" ]]; then

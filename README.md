@@ -3,6 +3,7 @@ Borg backup cron
 
 A docker image to backup periodically a folder using borg.
 Additionnally this image can dump a mysql database in the same folder beforehand.
+You can also run the cron job directly by overriding the command with `/var/backup_script.sh`
 
 Build
 -----

@@ -29,4 +29,4 @@ COPY entrypoint.sh /var/entrypoint.sh
 RUN chmod +x /var/entrypoint.sh
 ENTRYPOINT [ "/var/entrypoint.sh" ]
 
-CMD ["cron" "-f"]
+CMD ["cron", "-f"]
