@@ -9,8 +9,8 @@ Build
 -----
 
 ```
-git clone git@gitlab.com:ovski-projects/docker-images/borgbackup-cron.git
-cd borgbackup-cron
+git clone https://github.com/Ovski4/docker-borgbackup-cron.git
+cd docker-borgbackup-cron
 docker build -t ovski/borgbackup-cron:latest .
 ```
 
@@ -41,9 +41,9 @@ With mysql dump
 ```bash
 docker run \
    # ... other options
-   -e MYSQL_USER=/var/folder_to_backup \
-   -e MYSQL_DATABASE=/var/folder_to_backup \
-   -e MYSQL_PASSWORD=/var/folder_to_backup \
+   -e MYSQL_USER=myuser \
+   -e MYSQL_DATABASE=mydbname \
+   -e MYSQL_PASSWORD=mypass \
    ovski/borgbackup-cron
 ```
 
