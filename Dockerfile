@@ -1,8 +1,8 @@
 FROM ovski/ansible:v2.8.2
 
 # Clone ansible playbooks
-RUN git clone https://github.com/Ovski4/ansible-playbook-mysql-dump.git /var/borg-backup-playbook
-RUN git clone https://github.com/Ovski4/ansible-playbook-borg-backup.git /var/mysql-dump-playbook
+RUN git clone https://github.com/Ovski4/ansible-playbook-mysql-dump.git /var/mysql-dump-playbook
+RUN git clone https://github.com/Ovski4/ansible-playbook-borg-backup.git /var/borg-backup-playbook
 
 # Install borg
 RUN apt-get install -y \
