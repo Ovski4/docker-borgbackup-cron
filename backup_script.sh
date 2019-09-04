@@ -12,7 +12,7 @@ fi
 
 if [[ ! -z "$MONGO_HOST" && ! -z "$MONGO_DATABASE" && ! -z "$MONGO_PORT" ]]; then
     ansible-playbook /var/mongo-dump-playbook/main.yml \
-        -e "mysql_dumps_target_folder=$LOCAL_FOLDER/mongo_dumps" \
+        -e "mongo_dumps_target_folder=$LOCAL_FOLDER/mongo_dumps" \
         -e "prune=yes" \
         -e "db_port=$MONGO_PORT" \
         -e "db_host=$MONGO_HOST" \
