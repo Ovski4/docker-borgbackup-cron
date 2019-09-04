@@ -44,6 +44,18 @@ docker run \
    -e MYSQL_USER=myuser \
    -e MYSQL_DATABASE=mydbname \
    -e MYSQL_PASSWORD=mypass \
+   -e MYSQL_HOST=mysql \
+   ovski/borgbackup-cron
+```
+
+With mongo dump
+
+```bash
+docker run \
+   # ... other options
+   -e MONGO_PORT=27017 \
+   -e MONGO_DATABASE=my_mongo_dbname \
+   -e MONGO_HOST=mongo \
    ovski/borgbackup-cron
 ```
 
