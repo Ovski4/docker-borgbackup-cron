@@ -1,4 +1,4 @@
-FROM ovski/ansible:v2.8.2
+FROM ovski/ansible:v2.8.4
 
 # Clone ansible playbooks
 RUN git clone https://github.com/Ovski4/ansible-playbook-mysql-dump.git /var/mysql-dump-playbook
@@ -6,7 +6,7 @@ RUN git clone https://github.com/Ovski4/ansible-playbook-mongo-dump.git /var/mon
 RUN git clone https://github.com/Ovski4/ansible-playbook-borg-backup.git /var/borg-backup-playbook
 
 # Install borg
-RUN apt-get install -y \
+RUN apt install -y \
     python3 \
     python3-dev \
     python3-pip \
