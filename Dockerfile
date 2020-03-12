@@ -17,7 +17,7 @@ RUN apt install -y \
     borgbackup
 
 # Install packages for mysqldump
-RUN apt-get install -y mysql-client
+RUN apt-get install -y mariadb-client
 RUN pip3 install PyMySql
 
 # Install cron
