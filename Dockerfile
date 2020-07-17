@@ -4,6 +4,7 @@ FROM ovski/ansible:v2.9.6
 RUN git clone https://github.com/Ovski4/ansible-playbook-mysql-dump.git /var/mysql-dump-playbook
 RUN git clone https://github.com/Ovski4/ansible-playbook-mongo-dump.git /var/mongo-dump-playbook
 RUN git clone https://github.com/Ovski4/ansible-playbook-borg-backup.git /var/borg-backup-playbook
+RUN git clone https://github.com/Ovski4/ansible-playbook-elasticsearch-snapshot.git /var/elasticsearch-snapshot-playbook
 
 # Install borg
 RUN apt install -y \

@@ -59,6 +59,17 @@ docker run \
    ovski/borgbackup-cron
 ```
 
+With elasticsearch snapshot
+
+```bash
+docker run \
+   # ... other options
+   -e ELASTICSEARCH_PORT=9200 \
+   -e ELASTICSEARCH_HOST=elasticsearch \
+   -e ELASTICSEARCH_REPOSITORY=backup \
+   ovski/borgbackup-cron
+```
+
 You can also use secrets in a stack to store sensitive information.
 Instead of specifiying environment variables, create the following secrets in /var/secrets (default location):
 

@@ -19,6 +19,13 @@ if [[ ! -z "$MONGO_HOST" && ! -z "$MONGO_DATABASE" && ! -z "$MONGO_PORT" ]]; the
         -e "db_name=$MONGO_DATABASE"
 fi
 
+if [[ ! -z "$ELASTICSEARCH_HOST" && ! -z "$ELASTICSEARCH_REPOSITORY" && ! -z "$ELASTICSEARCH_PORT" ]]; then
+    ansible-playbook /var/elasticsearch-snapshot-playbook/main.yml \
+        -e "elasticsearch_port=$ELASTICSEARCH_PORT" \
+        -e "elasticsearch_host=$ELASTICSEARCH_HOST" \
+        -e "elasticsearch_repository=$ELASTICSEARCH_REPOSITORY"
+fi
+
 ansible-playbook /var/borg-backup-playbook/main.yml \
     -e "ssh_connection=$SSH_CONNECTION" \
     -e "private_key_path=$PRIVATE_KEY_PATH" \
