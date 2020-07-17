@@ -7,7 +7,8 @@ RUN git clone https://github.com/Ovski4/ansible-playbook-borg-backup.git /var/bo
 RUN git clone https://github.com/Ovski4/ansible-playbook-elasticsearch-snapshot.git /var/elasticsearch-snapshot-playbook
 
 # Install borg
-RUN apt install -y \
+RUN apt-get update && \
+    apt-get install -y \
     python3 \
     python3-dev \
     python3-pip \
