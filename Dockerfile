@@ -1,17 +1,15 @@
-FROM ovski/ansible:v2.9.6
+FROM ovski/ansible:v2.10.6
 
 # Clone ansible playbooks
+RUN apt-get update && apt-get install -y git
 RUN git clone https://github.com/Ovski4/ansible-playbook-mysql-dump.git /var/mysql-dump-playbook
 RUN git clone https://github.com/Ovski4/ansible-playbook-mongo-dump.git /var/mongo-dump-playbook
 RUN git clone https://github.com/Ovski4/ansible-playbook-borg-backup.git /var/borg-backup-playbook
 RUN git clone https://github.com/Ovski4/ansible-playbook-elasticsearch-snapshot.git /var/elasticsearch-snapshot-playbook
 
 # Install borg
-RUN apt-get update && \
-    apt-get install -y \
-    python3 \
+RUN apt-get install -y \
     python3-dev \
-    python3-pip \
     python-virtualenv \
     libssl-dev openssl \
     libacl1-dev libacl1 \
@@ -19,7 +17,7 @@ RUN apt-get update && \
     borgbackup
 
 # Install packages for mysqldump
-RUN apt-get install -y mariadb-client
+RUN apt-get install -y mariadb-client python3-apt
 RUN pip3 install PyMySql
 
 # Install cron
