@@ -9,7 +9,7 @@ if [[ -n "$SSH_KNOWN_HOSTS" ]]; then
     chmod 644 ~/.ssh/known_hosts
     while IFS=' ' read -ra entries; do
         for entry in "${entries[@]}"; do
-            ssh-keyscan -Ht rsa ${entry} >> ~/.ssh/known_hosts
+            ssh-keyscan ${entry} >> ~/.ssh/known_hosts
         done
     done <<< "$SSH_KNOWN_HOSTS"
 fi
