@@ -27,6 +27,12 @@ if [[ -f /run/secrets/db_password ]]; then
     export MYSQL_PASSWORD=$(cat /run/secrets/db_password)
 fi
 
+
+if [[ -f /run/secrets/smtp_password ]]; then
+    echo "Setting SMTP_PASSWORD env variable from secret"
+    export SMTP_PASSWORD=$(cat /run/secrets/smtp_password)
+fi
+
 # Make env variables accessible in crontab
 declare -p | grep -Ev 'BASHOPTS|BASH_VERSINFO|EUID|PPID|SHELLOPTS|UID' > /container.env
 

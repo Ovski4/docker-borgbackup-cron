@@ -1,7 +1,8 @@
-FROM ovski/ansible:v2.10.6
+FROM ovski/ansible:v4.0.0
 
 # Clone ansible playbooks
-RUN apt-get update && apt-get install -y git
+RUN apt-get --allow-releaseinfo-change update && apt-get install -y git
+RUN git clone https://github.com/Ovski4/ansible-playbook-smtp-email.git /var/smtp-email-playbook
 RUN git clone https://github.com/Ovski4/ansible-playbook-mysql-dump.git /var/mysql-dump-playbook
 RUN git clone https://github.com/Ovski4/ansible-playbook-mongo-dump.git /var/mongo-dump-playbook
 RUN git clone https://github.com/Ovski4/ansible-playbook-borg-backup.git /var/borg-backup-playbook
