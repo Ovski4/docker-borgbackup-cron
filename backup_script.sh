@@ -1,5 +1,21 @@
 #!/bin/bash
 
+send_email() {
+    ansible-playbook /var/smtp-email-playbook/main.yml \
+        -e "smtp_user=$SMTP_USER" \
+        -e "smtp_password=$SMTP_PASSWORD" \
+        -e "smtp_port=$SMTP_PORT" \
+        -e "smtp_host=$SMTP_HOST" \
+        -e "mail_to='$MAIL_TO'" \
+        -e "mail_body='$MAIL_BODY'" \
+        -e "mail_subject='$MAIL_SUBJECT'"
+}
+
+if [[ ! -z "$SMTP_USER" && ! -z "$SMTP_PASSWORD" && ! -z "$SMTP_PORT" && ! -z "$SMTP_HOST" && ! -z "$MAIL_TO" && ! -z "$MAIL_BODY" && ! -z "$MAIL_SUBJECT" ]]; then
+    set -o errexit -o errtrace
+    trap send_email ERR
+fi
+
 if [[ ! -z "$MYSQL_USER" && ! -z "$MYSQL_DATABASE" && ! -z "$MYSQL_PASSWORD" && ! -z "$MYSQL_HOST" ]]; then
     ansible-playbook /var/mysql-dump-playbook/main.yml \
         -e "mysql_dumps_target_folder=$LOCAL_FOLDER" \

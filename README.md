@@ -2,8 +2,20 @@ Borg backup cron
 =================
 
 A docker image to backup periodically a folder using borg.
-Additionnally this image can dump a mysql database in the same folder beforehand.
+Additionnally this image can:
+- dump a mysql database in the same folder beforehand
+- dump a mongo database
+- create an elasticsearch snapshot
+- send an email on failure
 You can also run the cron job directly by overriding the command with `/var/backup_script.sh`
+
+- [Borg backup cron](#borg-backup-cron)
+  - [Build](#build)
+  - [Usage](#usage)
+    - [With mysql dump](#with-mysql-dump)
+    - [With mongo dump](#with-mongo-dump)
+    - [With elasticsearch snapshot](#with-elasticsearch-snapshot)
+    - [Sending an email on failure](#sending-an-email-on-failure)
 
 Build
 -----
@@ -36,7 +48,7 @@ docker run \
    ovski/borgbackup-cron
 ```
 
-With mysql dump
+### With mysql dump
 
 ```bash
 docker run \
@@ -48,7 +60,7 @@ docker run \
    ovski/borgbackup-cron
 ```
 
-With mongo dump
+### With mongo dump
 
 ```bash
 docker run \
@@ -59,7 +71,7 @@ docker run \
    ovski/borgbackup-cron
 ```
 
-With elasticsearch snapshot
+### With elasticsearch snapshot
 
 ```bash
 docker run \
@@ -70,10 +82,26 @@ docker run \
    ovski/borgbackup-cron
 ```
 
+### Sending an email on failure
+
+```bash
+docker run \
+   # ... other options
+   -e SMTP_USER=smtpuser@gmail.com \
+   -e SMTP_PASSWORD=smtppassword \
+   -e SMTP_PORT=465 \
+   -e SMTP_HOST=smtp.gmail.com \
+   -e MAIL_TO=user@recipient.com \
+   -e MAIL_BODY="Email content" \
+   -e MAIL_SUBJECT="Email subject" \
+   ovski/borgbackup-cron
+```
+
 You can also use secrets in a stack to store sensitive information.
 Instead of specifiying environment variables, create the following secrets in /var/secrets (default location):
 
 ```
 /run/secrets/borg_passphrase instead of BORG_PASSPHRASE
 /run/secrets/db_password instead of MYSQL_PASSWORD
+/run/secrets/smtp_password instead of SMTP_PASSWORD
 ```
