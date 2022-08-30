@@ -3,19 +3,23 @@ Borg backup cron
 
 A docker image to backup periodically a folder using borg.
 Additionnally this image can:
-- dump a mysql database in the same folder beforehand
-- dump a mongo database
-- create an elasticsearch snapshot
-- send an email on failure
+* dump a mysql database in the same folder beforehand
+* dump a mongo database
+* create an elasticsearch snapshot
+* end an email on failure
+
 You can also run the cron job directly by overriding the command with `/var/backup_script.sh`
 
-- [Borg backup cron](#borg-backup-cron)
-  - [Build](#build)
-  - [Usage](#usage)
-    - [With mysql dump](#with-mysql-dump)
-    - [With mongo dump](#with-mongo-dump)
-    - [With elasticsearch snapshot](#with-elasticsearch-snapshot)
-    - [Sending an email on failure](#sending-an-email-on-failure)
+Table of contents
+-----------------
+
+- [Build](#build)
+- [Usage](#usage)
+  - [With mysql dump](#with-mysql-dump)
+  - [With mongo dump](#with-mongo-dump)
+  - [With elasticsearch snapshot](#with-elasticsearch-snapshot)
+  - [Sending an email on failure](#sending-an-email-on-failure)
+  - [Use secrets instead of env variables](#use-secrets-instead-of-env-variables)
 
 Build
 -----
@@ -96,6 +100,8 @@ docker run \
    -e MAIL_SUBJECT="Email subject" \
    ovski/borgbackup-cron
 ```
+
+### Use secrets instead of env variables
 
 You can also use secrets in a stack to store sensitive information.
 Instead of specifiying environment variables, create the following secrets in /var/secrets (default location):
