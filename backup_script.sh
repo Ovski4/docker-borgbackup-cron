@@ -1,6 +1,6 @@
 #!/bin/bash
 
-send_email() {
+send_email_on_error() {
     ansible-playbook /var/smtp-email-playbook/main.yml \
         -e "smtp_user=$SMTP_USER" \
         -e "smtp_password=$SMTP_PASSWORD" \
@@ -11,9 +11,10 @@ send_email() {
         -e "mail_subject='$MAIL_SUBJECT'"
 }
 
+# Only handle errors if the required environment variables are defined to send an email
 if [[ ! -z "$SMTP_USER" && ! -z "$SMTP_PASSWORD" && ! -z "$SMTP_PORT" && ! -z "$SMTP_HOST" && ! -z "$MAIL_TO" && ! -z "$MAIL_BODY" && ! -z "$MAIL_SUBJECT" ]]; then
     set -o errexit -o errtrace
-    trap send_email ERR
+    trap send_email_on_error ERR
 fi
 
 if [[ ! -z "$MYSQL_USER" && ! -z "$MYSQL_DATABASE" && ! -z "$MYSQL_PASSWORD" && ! -z "$MYSQL_HOST" ]]; then
