@@ -1,4 +1,4 @@
-FROM ovski/ansible:v4.0.0
+FROM ovski/ansible:v2.13.3
 
 # Clone ansible playbooks
 RUN apt-get --allow-releaseinfo-change update && apt-get install -y git
@@ -10,11 +10,15 @@ RUN git clone https://github.com/Ovski4/ansible-playbook-elasticsearch-snapshot.
 
 # Install borg
 RUN apt-get install -y \
+    python3 \
     python3-dev \
-    python-virtualenv \
-    libssl-dev openssl \
+    python3-pip \
+    python3-virtualenv \
     libacl1-dev libacl1 \
+    libssl-dev \
+    liblz4-dev libzstd-dev libxxhash-dev \
     build-essential \
+    pkg-config python3-pkgconfig \
     borgbackup
 
 # Install packages for mysqldump
