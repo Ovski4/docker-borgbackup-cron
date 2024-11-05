@@ -6,7 +6,7 @@ Additionnally this image can:
 * dump a mysql database in the same folder beforehand
 * dump a mongo database
 * create an elasticsearch snapshot
-* end an email on failure
+* send an email on failure
 
 You can also run the cron job directly by overriding the command with `/var/backup_script.sh`
 
