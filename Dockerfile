@@ -1,4 +1,4 @@
-FROM ovski/ansible:v2.13.3
+FROM ovski/ansible:v2.20.0
 
 # Clone ansible playbooks
 RUN apt-get --allow-releaseinfo-change update && apt-get install -y git
