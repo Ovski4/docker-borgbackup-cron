@@ -1,7 +1,12 @@
 Borg backup cron
-=================
+================
 
-A docker image to backup periodically a folder using borg.
+A Docker image for periodic folder backups using Borg.
+
+This image is designed to run alongside other containers and back up their data volumes on a scheduled basis. It works well with setups defined via docker-compose.yml or Docker Swarm stack.yml files.
+
+Full tutorial can be read at https://baptiste.bouchereau.pro/tutorial/backup-docker-volumes-with-borg/.
+
 Additionnally this image can:
 * dump a mysql database in the same folder beforehand
 * dump a mongo database
