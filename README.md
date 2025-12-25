@@ -101,7 +101,7 @@ docker run \
    -e SMTP_PASSWORD=smtppassword \
    -e SMTP_PORT=465 \
    -e SMTP_HOST=smtp.gmail.com \
-   -e MAIL_TO=user@recipient.com \
+   -e MAIL_TO=Test User <user@domain.com> \
    -e MAIL_BODY="Email content" \
    -e MAIL_SUBJECT="Email subject" \
    ovski/borgbackup-cron
@@ -170,6 +170,11 @@ services:
       MYSQL_USER: nextcloud
       MYSQL_DATABASE: nextcloud
       MYSQL_PASSWORD_FILE: /run/secrets/db_password
+      MAIL_TO: Test User <user@domain.com> \
+      MAIL_SUBJECT: Backup failed
+      MAIL_BODY: |
+        Backup for nextcloud app failed.
+        Run "docker composer logs -f backup_cron" for more information
       SSH_KNOWN_HOSTS: your.server.net,38.26.55.241
     secrets:
       - backup_server_user_private_key
