@@ -111,3 +111,75 @@ Instead of specifiying environment variables, create the following secrets in /v
 /run/secrets/db_password instead of MYSQL_PASSWORD
 /run/secrets/smtp_password instead of SMTP_PASSWORD
 ```
+
+### Example with docker compose
+
+> Taking a nextcloud app as an example, here is an excerpt of a docker compose configuration that will backup nextcloud data and create a mysql dump as well.
+
+```yml
+volumes:
+  mysql:
+  data:
+
+services:
+
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+      MYSQL_USER: nextcloud
+      MYSQL_DATABASE: nextcloud
+      MYSQL_PASSWORD_FILE: /run/secrets/db_password
+    volumes:
+      - mysql:/var/lib/mysql
+    secrets:
+      - db_root_password
+      - db_password
+
+  php:
+    image: nextcloud
+    volumes:
+      - data:/var/www/html
+    depends_on:
+      - mysql
+
+  nginx:
+    image: nginx:1.15.8-alpine
+    ...
+    volumes:
+      - data:/var/www/html
+
+  ...
+
+  backup_cron:
+    image: ovski/borgbackup-cron:latest
+    volumes:
+      - data:/var/docker_volumes/nextcloud/app/data
+    environment:
+      SSH_CONNECTION: backup_user@your.server.net
+      PRIVATE_KEY_PATH: /run/secrets/backup_server_user_private_key
+      BORG_REPO_PATH: /home/backup_user/borg_repositories
+      BORG_REPO_NAME: nextcloud
+      LOCAL_FOLDER: /var/docker_volumes/nextcloud
+      MYSQL_USER: nextcloud
+      MYSQL_DATABASE: nextcloud
+      MYSQL_PASSWORD_FILE: /run/secrets/db_password
+      SSH_KNOWN_HOSTS: your.server.net,38.26.55.241
+    secrets:
+      - backup_server_user_private_key
+      - borg_passphrase
+      - db_password
+
+secrets:
+
+  ...
+
+  backup_server_user_private_key:
+    file: secret_backup_server_user_private_key.txt
+  borg_passphrase:
+    file: secret_borg_passphrase.txt
+  db_root_password:
+    file: secret_db_root_password.txt
+  db_password:
+    file: secret_db_password.txt
+```
