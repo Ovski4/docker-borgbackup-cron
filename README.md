@@ -20,6 +20,7 @@ Table of contents
   - [With elasticsearch snapshot](#with-elasticsearch-snapshot)
   - [Sending an email on failure](#sending-an-email-on-failure)
   - [Use secrets instead of env variables](#use-secrets-instead-of-env-variables)
+  - [Example with docker compose](#example-with-docker-compose)
 
 Build
 -----
