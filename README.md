@@ -26,6 +26,7 @@ Table of contents
   - [Sending an email on failure](#sending-an-email-on-failure)
   - [Use secrets instead of env variables](#use-secrets-instead-of-env-variables)
   - [Example with docker compose](#example-with-docker-compose)
+- [Reference links](#reference-links)
 
 Build
 -----
@@ -194,3 +195,13 @@ secrets:
   db_password:
     file: secret_db_password.txt
 ```
+
+Reference links
+---------------
+
+The backup script run tasks using Ansible. The following Ansible playbooks are used:
+* Borg backup tasks: https://github.com/Ovski4/ansible-playbook-borg-backup.git
+* MySQL dump creation: https://github.com/Ovski4/ansible-playbook-mysql-dump.git
+* MongoDB dump creation: https://github.com/Ovski4/ansible-playbook-mongo-dump.git
+* Elasticsearch snapshot creation: https://github.com/Ovski4/ansible-playbook-elasticsearch-snapshot.git
+* SMTP email sending: https://github.com/Ovski4/ansible-playbook-smtp-email.git
