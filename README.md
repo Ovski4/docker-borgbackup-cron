@@ -1,32 +1,52 @@
 Borg backup cron
 ================
 
-A Docker image for periodic folder backups using Borg.
+A Docker image that performs **scheduled, encrypted, deduplicated backups** of Docker volumes using **BorgBackup**.
 
-This image is designed to run alongside other containers and back up their data volumes on a scheduled basis. It works well with setups defined via docker-compose.yml or Docker Swarm stack.yml files.
+It is designed to run alongside your existing containers (Docker Compose or Docker Swarm) and periodically back up application data to a remote Borg repository over SSH.
 
 Full tutorial can be read at https://baptiste.bouchereau.pro/tutorial/backup-docker-volumes-with-borg/.
-
-Additionnally this image can:
-* dump a mysql database in the same folder beforehand
-* dump a mongo database
-* create an elasticsearch snapshot
-* send an email on failure
-
-You can also run the cron job directly by overriding the command with `/var/backup_script.sh`
 
 Table of contents
 -----------------
 
+- [Features](#features)
+- [Backup schedule](#backup-schedule)
 - [Build](#build)
 - [Usage](#usage)
-  - [With mysql dump](#with-mysql-dump)
+  - [With MySQL / MariaDB dump](#with-mysql-mariadb-dump)
   - [With mongo dump](#with-mongo-dump)
   - [With elasticsearch snapshot](#with-elasticsearch-snapshot)
   - [Sending an email on failure](#sending-an-email-on-failure)
-  - [Use secrets instead of env variables](#use-secrets-instead-of-env-variables)
-  - [Example with docker compose](#example-with-docker-compose)
+  - [Using Docker secrets (recommended)](#using-docker-secrets-recommended)
+  - [Example with Docker Compose](#example-with-docker-compose)
+- [Restoring backups](#restoring-backups)
 - [Reference links](#reference-links)
+
+Features
+--------
+
+- 📦 Incremental, encrypted backups with Borg
+- ⏱️ Automated backups via cron
+- 🐳 Designed for Docker Compose & Docker Swarm
+- 🗄️ Optional database dumps:
+  - MySQL
+  - MongoDB
+- 🔍 Elasticsearch snapshot support
+- 📧 Email notification on backup failure
+- 🔐 Supports Docker secrets for sensitive data
+- ▶️ Can be run manually (one-shot backup)
+
+Backup schedule
+---------------
+
+By default, backups are executed via cron inside the container.
+
+- The crontab process is the container main process. Its job runs automatically when the container is started.
+- The default schedule is defined in the image: backup is executed every day at 1AM.
+- You can also run the cron job directly by overriding the command with value `/var/backup_script.sh`.
+
+Timezone handling depends on the container configuration (use TZ if needed).
 
 Build
 -----
@@ -40,9 +60,9 @@ docker build -t ovski/borgbackup-cron:latest .
 Usage
 -----
 
-1. Make sure borg is installed on your remote server
-2. Make sure the public key associated with the given private key is present in the ~/.ssh/authorized_keys file of your remote server
-3. Replace the value of the environment variables of the following command according to your needs.
+1. Ensure borg is installed on your **remote server**.
+2. Add the public SSH key to `~/.ssh/authorized_keys` on your remote server.
+3. Run the container with the required environment variables.
 
 ```bash
 docker run \
@@ -59,69 +79,57 @@ docker run \
    ovski/borgbackup-cron
 ```
 
-### With mysql dump
+### With MySQL / MariaDB dump
 
 ```bash
-docker run \
-   # ... other options
-   -e MYSQL_USER=myuser \
-   -e MYSQL_DATABASE=mydbname \
-   -e MYSQL_PASSWORD=mypass \
-   -e MYSQL_HOST=mysql \
-   ovski/borgbackup-cron
+-e MYSQL_USER=myuser \
+-e MYSQL_DATABASE=mydbname \
+-e MYSQL_PASSWORD=mypass \
+-e MYSQL_HOST=mysql
 ```
 
-### With mongo dump
+### With MongoDB dump
 
 ```bash
-docker run \
-   # ... other options
-   -e MONGO_PORT=27017 \
-   -e MONGO_DATABASE=my_mongo_dbname \
-   -e MONGO_HOST=mongo \
-   ovski/borgbackup-cron
+-e MONGO_PORT=27017 \
+-e MONGO_DATABASE=my_mongo_dbname \
+-e MONGO_HOST=mongo
 ```
 
-### With elasticsearch snapshot
+### With Elasticsearch snapshot
 
 ```bash
-docker run \
-   # ... other options
-   -e ELASTICSEARCH_PORT=9200 \
-   -e ELASTICSEARCH_HOST=elasticsearch \
-   -e ELASTICSEARCH_REPOSITORY=backup \
-   ovski/borgbackup-cron
+-e ELASTICSEARCH_PORT=9200 \
+-e ELASTICSEARCH_HOST=elasticsearch \
+-e ELASTICSEARCH_REPOSITORY=backup
 ```
 
-### Sending an email on failure
+### Email notification on failure
 
 ```bash
-docker run \
-   # ... other options
-   -e SMTP_USER=smtpuser@gmail.com \
-   -e SMTP_PASSWORD=smtppassword \
-   -e SMTP_PORT=465 \
-   -e SMTP_HOST=smtp.gmail.com \
-   -e MAIL_TO=Test User <user@domain.com> \
-   -e MAIL_BODY="Email content" \
-   -e MAIL_SUBJECT="Email subject" \
-   ovski/borgbackup-cron
+-e SMTP_USER=smtpuser@gmail.com \
+-e SMTP_PASSWORD=smtppassword \
+-e SMTP_PORT=465 \
+-e SMTP_HOST=smtp.gmail.com \
+-e MAIL_TO=Test User <user@domain.com> \
+-e MAIL_BODY="Backup failed" \
+-e MAIL_SUBJECT="Backup job failed. Check container logs for details." \
 ```
 
-### Use secrets instead of env variables
+### Using Docker secrets (recommended)
 
-You can also use secrets in a stack to store sensitive information.
-Instead of specifiying environment variables, create the following secrets in /var/secrets (default location):
+For better security, sensitive values can be provided using Docker secrets instead of environment variables.
+Create the following files in `/run/secrets` (default location):
 
-```
-/run/secrets/borg_passphrase instead of BORG_PASSPHRASE
-/run/secrets/db_password instead of MYSQL_PASSWORD
-/run/secrets/smtp_password instead of SMTP_PASSWORD
-```
+| Secret file     | Environment variable |
+| --------------- | -------------------- |
+| borg_passphrase | BORG_PASSPHRASE      |
+| db_password     | MYSQL_PASSWORD       |
+| smtp_password   | SMTP_PASSWORD        |
 
-### Example with docker compose
+### Example with Docker Compose
 
-> Taking a nextcloud app as an example, here is an excerpt of a docker compose configuration that will backup nextcloud data and create a mysql dump as well.
+> Taking a nextcloud app as an example, here is an excerpt of a docker compose configuration that will backup nextcloud data and create a MySQL dump.
 
 ```yml
 volumes:
@@ -196,12 +204,27 @@ secrets:
     file: secret_db_password.txt
 ```
 
+Restoring backups
+-----------------
+
+To restore data:
+1. Connect to the backup server
+2. Use standard Borg commands:
+
+```bash
+borg list /path/to/repo
+borg extract /path/to/repo::archive_name
+```
+
+Refer to the Borg documentation: https://borgbackup.readthedocs.io/
+
 Reference links
 ---------------
 
-The backup script run tasks using Ansible. The following Ansible playbooks are used:
-* Borg backup tasks: https://github.com/Ovski4/ansible-playbook-borg-backup.git
-* MySQL dump creation: https://github.com/Ovski4/ansible-playbook-mysql-dump.git
-* MongoDB dump creation: https://github.com/Ovski4/ansible-playbook-mongo-dump.git
-* Elasticsearch snapshot creation: https://github.com/Ovski4/ansible-playbook-elasticsearch-snapshot.git
-* SMTP email sending: https://github.com/Ovski4/ansible-playbook-smtp-email.git
+This image relies on the following Ansible playbooks:
+
+- Borg backup tasks: https://github.com/Ovski4/ansible-playbook-borg-backup.git
+- MySQL dump creation: https://github.com/Ovski4/ansible-playbook-mysql-dump.git
+- MongoDB dump creation: https://github.com/Ovski4/ansible-playbook-mongo-dump.git
+- Elasticsearch snapshot creation: https://github.com/Ovski4/ansible-playbook-elasticsearch-snapshot.git
+- SMTP email sending: https://github.com/Ovski4/ansible-playbook-smtp-email.git
