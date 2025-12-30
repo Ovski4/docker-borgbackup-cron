@@ -5,8 +5,6 @@ A Docker image that performs **scheduled, encrypted, deduplicated backups** of D
 
 It is designed to run alongside your existing containers (Docker Compose or Docker Swarm) and periodically back up application data to a remote Borg repository over SSH.
 
-Full tutorial can be read at https://baptiste.bouchereau.pro/tutorial/backup-docker-volumes-with-borg/.
-
 Table of contents
 -----------------
 
@@ -14,8 +12,8 @@ Table of contents
 - [Backup schedule](#backup-schedule)
 - [Build](#build)
 - [Usage](#usage)
-  - [With MySQL / MariaDB dump](#with-mysql-mariadb-dump)
-  - [With mongo dump](#with-mongo-dump)
+  - [With MySQL / MariaDB dump](#with-mysql--mariadb-dump)
+  - [With mongo dump](#with-mongodb-dump)
   - [With elasticsearch snapshot](#with-elasticsearch-snapshot)
   - [Sending an email on failure](#sending-an-email-on-failure)
   - [Using Docker secrets (recommended)](#using-docker-secrets-recommended)
@@ -26,16 +24,15 @@ Table of contents
 Features
 --------
 
-- 📦 Incremental, encrypted backups with Borg
-- ⏱️ Automated backups via cron
-- 🐳 Designed for Docker Compose & Docker Swarm
-- 🗄️ Optional database dumps:
+- Incremental, encrypted backups with Borg
+- Automated backups via cron
+- Optional database dumps:
   - MySQL
   - MongoDB
-- 🔍 Elasticsearch snapshot support
-- 📧 Email notification on backup failure
-- 🔐 Supports Docker secrets for sensitive data
-- ▶️ Can be run manually (one-shot backup)
+- Elasticsearch snapshot support
+- Email notification on backup failure
+- Supports Docker secrets for sensitive data
+- Can be run manually (one-shot backup)
 
 Backup schedule
 ---------------
@@ -231,3 +228,5 @@ This image relies on the following Ansible playbooks:
 - MongoDB dump creation: https://github.com/Ovski4/ansible-playbook-mongo-dump.git
 - Elasticsearch snapshot creation: https://github.com/Ovski4/ansible-playbook-elasticsearch-snapshot.git
 - SMTP email sending: https://github.com/Ovski4/ansible-playbook-smtp-email.git
+
+Ansible docker base image: https://github.com/Ovski4/docker-ansible
