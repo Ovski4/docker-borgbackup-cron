@@ -36,4 +36,11 @@ fi
 # Make env variables accessible in crontab
 declare -p | grep -Ev 'BASHOPTS|BASH_VERSINFO|EUID|PPID|SHELLOPTS|UID' > /container.env
 
+# Render cron template to actual crontab at container start so schedule can be configured via env
+BACKUP_CRON_SCHEDULE="${BACKUP_CRON_SCHEDULE:-0 1 * * *}"
+export BACKUP_CRON_SCHEDULE
+envsubst < /etc/cron.d/borgbackup_cron.template > /etc/cron.d/borgbackup_cron
+chmod +x /etc/cron.d/borgbackup_cron
+crontab /etc/cron.d/borgbackup_cron
+
 exec "$@"

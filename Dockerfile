@@ -23,9 +23,10 @@ RUN apt-get install -y cron
 COPY backup_script.sh /var/backup_script.sh
 RUN chmod +x /var/backup_script.sh
 
-COPY borgbackup_cron /etc/cron.d/borgbackup_cron
-RUN chmod +x /etc/cron.d/borgbackup_cron
-RUN crontab /etc/cron.d/borgbackup_cron
+COPY borgbackup_cron.template /etc/cron.d/borgbackup_cron.template
+
+# envsubst (from gettext-base) is used at container start to render the cron template
+RUN apt-get install -y gettext-base
 
 # Clone ansible playbooks
 RUN apt-get --allow-releaseinfo-change update && apt-get install -y git
