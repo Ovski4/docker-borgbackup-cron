@@ -4,8 +4,8 @@ BASH_ENV=/container.env
 
 # minutes hours day-of-month month day-0f-week command
 
-# Every 5 minutes
-*/5 * * * * echo "KEEPALIVE CHECK [$(date '+%Y-%m-%d %H:%M:%S')]" > /proc/1/fd/1 2>/proc/1/fd/2
+# Every 30 minutes
+*/30 * * * * echo "KEEPALIVE CHECK [$(date '+\%Y-\%m-\%d \%H:\%M:\%S')]" > /proc/1/fd/1 2>/proc/1/fd/2
 
 # Backup schedule (set BACKUP_CRON_SCHEDULE env var, default: 0 1 * * *)
 ${BACKUP_CRON_SCHEDULE} /var/backup_script.sh  > /proc/1/fd/1 2>/proc/1/fd/2
