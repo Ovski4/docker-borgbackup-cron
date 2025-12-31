@@ -40,10 +40,8 @@ Backup schedule
 By default, backups are executed via cron inside the container.
 
 - The crontab process is the container main process. Its job runs automatically when the container is started.
-- The default schedule is every day at 1AM. Set your own schedule by setting the `BACKUP_CRON_SCHEDULE` env var (examples below).
+- The default schedule is every day at 1AM (UTC). Set your own schedule by setting the `BACKUP_CRON_SCHEDULE` env var (examples below).
 - You can also run the cron job directly by overriding the command with value `/var/backup_script.sh`.
-
-Timezone handling depends on the container configuration (use TZ if needed).
 
 Build
 -----
