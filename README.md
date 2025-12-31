@@ -63,10 +63,10 @@ Usage
 docker run \
    -d \
    -v /path/to/folder_to_backup:/var/folder_to_backup \
-   -v /path/to/backup_user_private_key:/var/run/backup_user_private_key \
+   -v /path/to/backup_user_private_key:/var/backup_user_private_key \
    -e SSH_KNOWN_HOSTS=my-server.com,27.189.111.145 \
    -e SSH_CONNECTION=backup_user@my-server.com \
-   -e PRIVATE_KEY_PATH=/var/run/backup_user_private_key \
+   -e PRIVATE_KEY_PATH=/var/backup_user_private_key \
    -e BORG_REPO_PATH=/home/backup_user/borg_repositories \
    -e BORG_REPO_NAME=folder_to_backup \
    -e BORG_PASSPHRASE=youyouthatsnotgood \
