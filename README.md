@@ -173,6 +173,7 @@ services:
       PRIVATE_KEY_PATH: /run/secrets/backup_server_user_private_key
       BORG_REPO_PATH: /home/backup_user/borg_repositories
       BORG_REPO_NAME: nextcloud
+      BACKUP_CRON_SCHEDULE: 30 0 * * * # At 00:30 every day
       LOCAL_FOLDER: /var/docker_volumes/nextcloud
       MYSQL_USER: nextcloud
       MYSQL_DATABASE: nextcloud
@@ -181,7 +182,7 @@ services:
       MAIL_SUBJECT: Backup failed
       MAIL_BODY: |
         Backup for nextcloud app failed.
-        Run "docker composer logs -f backup_cron" for more information
+        Run "docker compose logs -f backup_cron" for more information
       SSH_KNOWN_HOSTS: your.server.net,38.26.55.241
     secrets:
       - backup_server_user_private_key
