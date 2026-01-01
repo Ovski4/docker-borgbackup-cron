@@ -107,8 +107,8 @@ docker run \
 ```bash
 -e SMTP_USER=smtpuser@gmail.com \
 -e SMTP_PASSWORD=smtppassword \
--e SMTP_PORT=465 \
--e SMTP_HOST=smtp.gmail.com \
+-e SMTP_PORT=587 \
+-e SMTP_HOST=smtp.mailgun.org \
 -e MAIL_TO=Test User <user@domain.com> \
 -e MAIL_BODY="Backup failed" \
 -e MAIL_SUBJECT="Backup job failed. Check container logs for details." \
@@ -178,6 +178,9 @@ services:
       MYSQL_USER: nextcloud
       MYSQL_DATABASE: nextcloud
       MYSQL_PASSWORD_FILE: /run/secrets/db_password
+      SMTP_USER: smtpuser@gmail.com
+      SMTP_PORT: 587
+      SMTP_HOST: smtp.mailgun.org
       MAIL_TO: Test User <user@domain.com> \
       MAIL_SUBJECT: Backup failed
       MAIL_BODY: |
@@ -188,6 +191,7 @@ services:
       - backup_server_user_private_key
       - borg_passphrase
       - db_password
+      - smtp_password
 
 secrets:
 
@@ -201,6 +205,8 @@ secrets:
     file: secret_db_root_password.txt
   db_password:
     file: secret_db_password.txt
+  smtp_password:
+    file: secret_smtp_password.txt
 ```
 
 Restoring backups
