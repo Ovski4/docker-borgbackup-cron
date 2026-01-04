@@ -31,7 +31,7 @@ COPY borgbackup_cron.template /etc/cron.d/borgbackup_cron.template
 RUN apt-get --allow-releaseinfo-change update && apt-get install -y git
 RUN git clone --depth 1 https://github.com/Ovski4/ansible-playbook-smtp-email.git /var/smtp-email-playbook
 RUN git clone --depth 1 https://github.com/Ovski4/ansible-playbook-mysql-dump.git /var/mysql-dump-playbook
-RUN git clone --depth 1 https://github.com/Ovski4/ansible-playbook-postgresql-dump.git /var/mysql-dump-playbook
+RUN git clone --depth 1 https://github.com/Ovski4/ansible-playbook-postgresql-dump.git /var/postgresql-dump-playbook
 RUN git clone --depth 1 https://github.com/Ovski4/ansible-playbook-mongo-dump.git /var/mongo-dump-playbook
 RUN git clone --depth 1 https://github.com/Ovski4/ansible-playbook-borg-backup.git /var/borg-backup-playbook
 RUN git clone --depth 1 https://github.com/Ovski4/ansible-playbook-elasticsearch-snapshot.git /var/elasticsearch-snapshot-playbook
