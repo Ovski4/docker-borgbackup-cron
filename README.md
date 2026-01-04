@@ -19,6 +19,7 @@ Table of contents
   - [Using Docker secrets (recommended)](#using-docker-secrets-recommended)
   - [Example with Docker Compose](#example-with-docker-compose)
 - [Restoring backups](#restoring-backups)
+- [Troubleshooting](#troubleshooting)
 - [Reference links](#reference-links)
 
 Features
@@ -222,6 +223,10 @@ borg extract /path/to/repo::archive_name
 ```
 
 Refer to the Borg documentation: https://borgbackup.readthedocs.io/
+
+Troubleshooting
+---------------
+If the script fails at borg repository initalization with an error such as `Load key "/run/secrets/backup_user_private_key": error in libcrypto, Permission denied, please try again.`, try adding a newline (\n) at the end of the private key file secret.
 
 Reference links
 ---------------
