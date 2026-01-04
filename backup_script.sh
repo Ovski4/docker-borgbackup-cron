@@ -27,6 +27,16 @@ if [[ ! -z "$MYSQL_USER" && ! -z "$MYSQL_DATABASE" && ! -z "$MYSQL_PASSWORD" && 
         -e "db_name=$MYSQL_DATABASE"
 fi
 
+if [[ ! -z "$PG_USER" && ! -z "$PG_DATABASE" && ! -z "$PG_PASSWORD" && ! -z "$PG_HOST" ]]; then
+    ansible-playbook /var/postgresql-dump-playbook/main.yml \
+        -e "dumps_target_folder=$LOCAL_FOLDER" \
+        -e "prune=yes" \
+        -e "db_user=$PG_USER" \
+        -e "db_password=$PG_PASSWORD" \
+        -e "db_host=$PG_HOST" \
+        -e "db_name=$PG_DATABASE"
+fi
+
 if [[ ! -z "$MONGO_HOST" && ! -z "$MONGO_DATABASE" && ! -z "$MONGO_PORT" ]]; then
     ansible-playbook /var/mongo-dump-playbook/main.yml \
         -e "mongo_dumps_target_folder=$LOCAL_FOLDER" \

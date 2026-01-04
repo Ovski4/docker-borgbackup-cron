@@ -13,6 +13,7 @@ Table of contents
 - [Build](#build)
 - [Usage](#usage)
   - [With MySQL / MariaDB dump](#with-mysql--mariadb-dump)
+  - [With PostgreSQL dump](#with-postgresql-dump)
   - [With mongo dump](#with-mongodb-dump)
   - [With elasticsearch snapshot](#with-elasticsearch-snapshot)
   - [Sending an email on failure](#sending-an-email-on-failure)
@@ -87,6 +88,15 @@ docker run \
 -e MYSQL_HOST=mysql
 ```
 
+### With PostgreSQL dump
+
+```bash
+-e PG_USER=myuser \
+-e PG_DATABASE=mydbname \
+-e PG_PASSWORD=mypass \
+-e PG_HOST=db
+```
+
 ### With MongoDB dump
 
 ```bash
@@ -123,7 +133,8 @@ Create the following files in `/run/secrets` (default location):
 | Secret file     | Environment variable |
 | --------------- | -------------------- |
 | borg_passphrase | BORG_PASSPHRASE      |
-| db_password     | MYSQL_PASSWORD       |
+| mysql_password  | MYSQL_PASSWORD       |
+| pg_password     | POSTGRES_PASSWORD    |
 | smtp_password   | SMTP_PASSWORD        |
 
 ### Example with Docker Compose
@@ -140,15 +151,15 @@ services:
   mysql:
     image: mysql
     environment:
-      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
       MYSQL_USER: nextcloud
       MYSQL_DATABASE: nextcloud
-      MYSQL_PASSWORD_FILE: /run/secrets/db_password
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
     volumes:
       - mysql:/var/lib/mysql
     secrets:
-      - db_root_password
-      - db_password
+      - mysql_root_password
+      - mysql_password
 
   php:
     image: nextcloud
@@ -178,7 +189,7 @@ services:
       LOCAL_FOLDER: /var/docker_volumes/nextcloud
       MYSQL_USER: nextcloud
       MYSQL_DATABASE: nextcloud
-      MYSQL_PASSWORD_FILE: /run/secrets/db_password
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
       SMTP_USER: smtpuser@gmail.com
       SMTP_PORT: 587
       SMTP_HOST: smtp.mailgun.org
@@ -191,7 +202,7 @@ services:
     secrets:
       - backup_server_user_private_key
       - borg_passphrase
-      - db_password
+      - mysql_password
       - smtp_password
 
 secrets:
@@ -202,10 +213,10 @@ secrets:
     file: secret_backup_server_user_private_key.txt
   borg_passphrase:
     file: secret_borg_passphrase.txt
-  db_root_password:
-    file: secret_db_root_password.txt
-  db_password:
-    file: secret_db_password.txt
+  mysql_root_password:
+    file: secret_mysql_root_password.txt
+  mysql_password:
+    file: secret_mysql_password.txt
   smtp_password:
     file: secret_smtp_password.txt
 ```

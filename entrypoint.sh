@@ -22,11 +22,15 @@ elif [[ -z "$BORG_PASSPHRASE" ]]; then
     exit 1
 fi
 
-if [[ -f /run/secrets/db_password ]]; then
+if [[ -f /run/secrets/mysql_password ]]; then
     echo "Setting MYSQL_PASSWORD env variable from secret"
-    export MYSQL_PASSWORD=$(cat /run/secrets/db_password)
+    export MYSQL_PASSWORD=$(cat /run/secrets/mysql_password)
 fi
 
+if [[ -f /run/secrets/pg_password ]]; then
+    echo "Setting PG_PASSWORD env variable from secret"
+    export PG_PASSWORD=$(cat /run/secrets/pg_password)
+fi
 
 if [[ -f /run/secrets/smtp_password ]]; then
     echo "Setting SMTP_PASSWORD env variable from secret"
