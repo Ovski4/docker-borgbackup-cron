@@ -5,6 +5,8 @@ A Docker image that performs **scheduled, encrypted, deduplicated backups** of D
 
 It is designed to run alongside your existing containers (Docker Compose or Docker Swarm) and periodically back up application data to a remote Borg repository over SSH.
 
+💡 You can try this image in local first by following [this tutorial](https://baptiste.bouchereau.pro/tutorial/backup-docker-volumes-with-borg/).
+
 Table of contents
 -----------------
 
